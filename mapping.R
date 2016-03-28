@@ -1,16 +1,11 @@
 ## making maps
 
 ## load libraries
-library(dismo)
 library(fields)
-library(maps)
-library(rgdal)
-library(raster)
-library(maptools)
 
 ## load data
-sp1 <- read.table(file="data/species1.csv",  header=TRUE,  sep=",")
-sp2 <- read.table(file="data/species2.csv",  header=TRUE,  sep=",")
+sp1 <- read.table(file="speciesData/species1.csv",  header=TRUE,  sep=",")
+sp2 <- read.table(file="speciesData/species2.csv",  header=TRUE,  sep=",")
 
 ## quick and dirty plot on map (could also plot points first and add map)
 US(xlim=c(-85,-77), ylim=c(26,37))
