@@ -46,6 +46,8 @@ bio18_l <- raster("~/data/Bioclim/bio_2-5m_bil/bio18.bil")
 bio19_l <- raster("~/data/Bioclim/bio_2-5m_bil/bio19.bil")
 
 ## mask/clip data layers and save to file
+## NOTE: check to make sure the file sizes of resulting .asc are about the same;
+## if they are not, rerun the writeRaster command
 dir.create("layers")
 
 alt <- mask(alt_l, SEstates)
