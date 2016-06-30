@@ -20,8 +20,9 @@ southeastStatesCap <- c("Florida", "Georgia", "North Carolina", "South Carolina"
 SEstates <- state[as.character(state@data$NAME) %in% southeastStatesCap, ]
 writeSpatialShape(SEstates, "shapefiles/SEstates")
 
-## load WorldClim layers
-# these large data layers should be downloaded from http://www.worldclim.org/current 
+## load WorldClim layers (you can skip this step if you only want to run the example;
+# clipped layers have been included)
+# Downloaded layers from http://www.worldclim.org/current 
 # and stored somewhere on your computer for ease of access
 alt_l <- raster("~/data/Bioclim/alt_2-5m_bil/alt.bil")
 bio1_l <- raster("~/data/Bioclim/bio_2-5m_bil/bio1.bil")
