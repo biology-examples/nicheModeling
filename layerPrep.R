@@ -1,8 +1,12 @@
 ## prepping layers for modeling
 
-## load libraries
-library(maptools)
+## load libraries (not all used directly, but required as dependencies)
+library(dismo)
+library(fields)
+library(maps)
+library(rgdal)
 library(raster)
+library(maptools)
 
 # load previously created shapefile
 SEstates <- readShapePoly("shapefiles/SEstates.shp") 
@@ -21,10 +25,12 @@ SEstates <- state[as.character(state@data$NAME) %in% southeastStatesCap, ]
 writeSpatialShape(SEstates, "shapefiles/SEstates")
 
 ## load WorldClim layers (you can skip this step if you only want to run the example;
-# clipped layers have been included)
+#   clipped layers have been included)
 # Downloaded layers from http://www.worldclim.org/current 
-# and stored somewhere on your computer for ease of access
+#   and stored somewhere on your computer for ease of access
+# Make sure rgdal package is loaded
 alt_l <- raster("~/data/Bioclim/alt_2-5m_bil/alt.bil")
+#plot(alt_l) # to check whether loading worked
 bio1_l <- raster("~/data/Bioclim/bio_2-5m_bil/bio1.bil")
 bio2_l <- raster("~/data/Bioclim/bio_2-5m_bil/bio2.bil")
 bio3_l <- raster("~/data/Bioclim/bio_2-5m_bil/bio3.bil")
@@ -46,8 +52,8 @@ bio18_l <- raster("~/data/Bioclim/bio_2-5m_bil/bio18.bil")
 bio19_l <- raster("~/data/Bioclim/bio_2-5m_bil/bio19.bil")
 
 ## mask/clip data layers and save to file
-## NOTE: check to make sure the file sizes of resulting .asc are about the same;
-## if they are not, rerun the writeRaster command
+# NOTE: check to make sure the file sizes of resulting .asc are about the same;
+#  if they are not, rerun the writeRaster command
 dir.create("layers")
 
 alt <- mask(alt_l, SEstates)
@@ -158,4 +164,6 @@ stack <- stack(bio1, bio2, bio3, bio4, bio5, bio6, bio7, bio8, bio9, bio10, bio1
 corr <- layerStats(stack, 'pearson', na.rm=TRUE)
 c <- corr$`pearson correlation coefficient`
 write.csv(c, "layers/correlationBioclim.csv")
-# inspect output for correlations between layers so you may remove them from subsequent analysis
+# inspect output for correlations between layers
+#   0.7 and above (or -0.7 and below) are correlated
+#   for this analysis, retain bio2, bio3, bio5, bio6, bio8, bio9, bio12, bio13, bio14, bio19, and alt
