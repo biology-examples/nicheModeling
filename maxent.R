@@ -11,6 +11,9 @@ library(maptools)
 library(dplyr)
 library(rJava)
 
+# create directory for saving models later
+dir.create("models")
+
 # import occurrence data and convert to format required by maxent
 both <- read.csv(file="taxaData/bothTaxa.csv")
 diploid <- both %>%
@@ -31,6 +34,7 @@ response(maxDip) # show response curves for each layer
 rDip <- predict(maxDip, predictors) # create model
 plot(rDip)
 points(diploid)
+writeRaster(rDip, "models/diploid.grd")
 
 # run maxent for tetraploid (default parameters)
 maxTetra <- maxent(predictors, tetraploid) # run with default parameters
@@ -39,6 +43,7 @@ response(maxTetra) # show response curves for each layer
 rTetra <- predict(maxTetra, predictors) # create model 
 plot(rTetra)
 points(tetraploid)
+writeRaster(rTetra, "models/tetraploid.grd")
 
 # more complicated maxent modeling
 maxAdvanced1 <- maxent(predictors, tetraploid, args=c("randomseed=true", "replicatetype=crossvalidate", "replicates=640", "-J")) # takes much longer!
