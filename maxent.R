@@ -46,4 +46,4 @@ points(tetraploid)
 writeRaster(rTetra, "models/tetraploid.grd")
 
 # more complicated maxent modeling
-maxAdvanced1 <- maxent(predictors, tetraploid, args=c("randomseed=true", "replicatetype=crossvalidate", "replicates=640", "-J")) # takes much longer!
+maxAdvanced1 <- maxent(predictors, tetraploid, args=c("randomseed=true", "replicatetype=crossvalidate", "replicates=640", "-J")) # takes much longer, but includes cross validation, random seed, runs jacknife
