@@ -1,7 +1,7 @@
 ## evaluating niche overlap between taxa
 
 library(ecospat)
-library(enmtools)
+library(ENMeval)
 library(raster)
 library(dismo)
 
@@ -14,7 +14,10 @@ rTetra <- raster("models/tetraploid.grd")
 
 # PCA with varimax rotation and Kaiser criterion (eigenvalues greater than or equal to 1) when choosing factors to include in PCA
 
-## assessing niche overlap
+## comparing niches
+# assessing niche overlap
 nicheOverlap(rDip, rTetra, stat='D', mask=TRUE, checkNegatives=TRUE) # D statistic
 nicheOverlap(rDip, rTetra, stat='I', mask=TRUE, checkNegatives=TRUE) # I statistic
-nicheEquivalency()
+
+# assessing niche equivalency
+#nicheEquivalency()
