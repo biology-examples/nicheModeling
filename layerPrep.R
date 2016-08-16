@@ -7,6 +7,7 @@ library(maps)
 library(rgdal)
 library(raster)
 library(maptools)
+library(caret)
 
 # load previously created shapefile
 SEstates <- readShapePoly("shapefiles/SEstates.shp")
@@ -149,10 +150,16 @@ bio18 <- raster("layers/bio18.asc")
 bio19 <- raster("layers/bio19.asc")
 
 ## correlation analysis
+# combine layers into one object
 stacked <- stack(bio1, bio2, bio3, bio4, bio5, bio6, bio7, bio8, bio9, bio10, bio11, bio12, bio13, bio14, bio15, bio16, bio17, bio18, bio19) 
+# calculate correlation
 corr <- layerStats(stacked, 'pearson', na.rm=TRUE)
+# save matrix of correlations
 c <- corr$`pearson correlation coefficient`
+# save correlation matrix to file
 write.csv(c, "layers/correlationBioclim.csv")
-# inspect output for correlations between layers
-#   greater than 0.7 (and less than -0.7) are correlated
-#   for this analysis, retain bio2, bio3, bio5, bio6, bio8, bio9, bio12, bio13, bio14, bio19, and alt
+# manually inspect this output for correlations; 
+# greater than 0.7 (and less than -0.7) are correlated
+# note: automated correlation assessment doesn't work well for layers
+  
+# for this analysis, retain bio2, bio3, bio5, bio6, bio8, bio9, bio12, bio13, bio14, bio19, and alt
