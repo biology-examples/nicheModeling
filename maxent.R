@@ -23,6 +23,28 @@ tetraploid <- both %>%
   filter(cytotype=="4X")
 tetraploid <- tetraploid[,c(3,2)]
 
+# import layers
+alt <- raster("layers/alt.asc", crs="+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")
+bio1 <- raster("layers/bio1.asc", crs="+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")
+bio2 <- raster("layers/bio2.asc", crs="+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")
+bio3 <- raster("layers/bio3.asc", crs="+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")
+bio4 <- raster("layers/bio4.asc", crs="+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")
+bio5 <- raster("layers/bio5.asc", crs="+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")
+bio6 <- raster("layers/bio6.asc", crs="+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")
+bio7 <- raster("layers/bio7.asc", crs="+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")
+bio8 <- raster("layers/bio8.asc", crs="+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")
+bio9 <- raster("layers/bio9.asc", crs="+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")
+bio10 <- raster("layers/bio10.asc", crs="+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")
+bio11 <- raster("layers/bio11.asc", crs="+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")
+bio12 <- raster("layers/bio12.asc", crs="+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")
+bio13 <- raster("layers/bio13.asc", crs="+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")
+bio14 <- raster("layers/bio14.asc", crs="+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")
+bio15 <- raster("layers/bio15.asc", crs="+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")
+bio16 <- raster("layers/bio16.asc", crs="+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")
+bio17 <- raster("layers/bio17.asc", crs="+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")
+bio18 <- raster("layers/bio18.asc", crs="+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")
+bio19 <- raster("layers/bio19.asc", crs="+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")
+
 ## create stack of non-correlated layers (as determined by layerPrep.R)
 predictors <- stack(alt, bio2, bio3, bio5, bio6, bio8, bio9, bio12, bio13, bio14, bio19) 
 # plot each layer individually
