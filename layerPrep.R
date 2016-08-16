@@ -9,20 +9,9 @@ library(raster)
 library(maptools)
 
 # load previously created shapefile
-SEstates <- readShapePoly("shapefiles/SEstates.shp") 
-
-# if shapefile hasn't been created, use following code to download US Census states
-# download, unzip all state shapefiles to new directory
-download.file("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_state_20m.zip", "cb_2015_us_state_20m.zip")
-dir.create("shapefiles")
-unzip("cb_2015_us_state_20m.zip", exdir="shapefiles")
-# load shapefiles and set projection
-state <- readShapePoly("shapefiles/cb_2015_us_state_20m.shp") 
-projection(state) <- CRS("+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")
-# extract shapefiles of interest and save to file 
-southeastStatesCap <- c("Florida", "Georgia", "North Carolina", "South Carolina")
-SEstates <- state[as.character(state@data$NAME) %in% southeastStatesCap, ]
-writeSpatialShape(SEstates, "shapefiles/SEstates")
+SEstates <- readShapePoly("shapefiles/SEstates.shp")
+# set projection
+projection(SEstates) <- CRS("+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")
 
 ## load WorldClim layers (you can skip this step if you only want to run the example;
 #   clipped layers have been included)
