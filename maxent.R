@@ -72,6 +72,40 @@ points(tetraploid)
 writeRaster(rTetra, "models/tetraploid.grd")
 
 ## Advanced modeling
+# develop testing and training sets for diploid
+fold <- kfold(diploid, k=5) #split occurence points into 5 sets
+dipTest <- diploid[fold == 1, ] #take 20% (1/5) for testing
+dipTrain <- diploid[fold != 1, ] #leave 40% for training
+
+# fit training model for diploid
+maxDipTrain <- maxent(predictors, dipTrain) #fit maxent model
+maxDipTrain #view results in html
+rDipTrain <- predict(maxDipTrain, predictors) #predict full model
+plot(rDipTrain) #visualize full model
+points(diploid) #add points to plot
+
+# testing model for diploid
+# extract background points
+bg <- randomPoints(predictors, 1000)
+# cross-validate model
+maxDipTest <- evaluate(maxDipTrain, p=dipTest, a=bg, x=predictors)
+maxDipTest #print results
+threshold(maxDipTest) #identify threshold for presence or absence
+plot(maxDipTest, 'ROC') #plot AUC
+
+# alternative methods for testing models (should give same answers)
+# Alternative 1: another way to test model
+pvtest <- data.frame(extract(predictors, dipTest))
+avtest <- data.frame(extract(predictors, bg))
+# cross-validate model
+maxDipTest2 <- evaluate(maxDipTrain, p=pvtest, a=avtest)
+maxDipTest2
+# Alternative 2: predict to testing points
+testp <- predict(maxDipTrain, pvtest)
+testa <- predict(maxDipTrain, avtest)
+maxDipTest3 <- evaluate(p=testp, a=testa)
+maxDipTest3
+
 # maxent with jackknife, random seed, and response curves, followed by cross-validation
 maxDipAdv <- maxent(
   x=predictors,
@@ -86,4 +120,3 @@ maxDipAdv <- maxent(
   )
 )
 maxDipAdv #view output as html
-# perform cross-validation of maxent model
