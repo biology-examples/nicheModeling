@@ -58,23 +58,17 @@ points(tetraploid)
 writeRaster(rTetra, "models/tetraploid.grd")
 
 ## Advanced modeling
-# maxent with arguments: all variables default except threads 
-# (results should be identical to default command in section above)
-maxTetraDefault <- maxent(
+# maxent with jackknife, random seed, and response curves, followed by cross-validation
+maxDipAdv <- maxent(
   x=predictors,
-  p=tetraploid,
-  a=backgr,
+  p=diploid,
+  removeDuplicates=TRUE,
+  nbg=10000,
   args=c(
-    'randomtestpoints=0',
-    'betamultiplier=1',
-    'linear=true',
-    'quadratic=true',
-    'product=true',
-    'threshold=true',
-    'hinge=true',
-    'threads=2',
-    'responsecurves=true',
-    'jackknife=true',
-    'askoverwrite=false'
+    'randomseed=true', #default=false
+    'threads=2', #default=1
+    'responsecurves=true', #default=false
+    'jackknife=true' #default=false
   )
 )
+# perform cross-validation of maxent model
