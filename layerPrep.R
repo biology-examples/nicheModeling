@@ -149,10 +149,10 @@ bio18 <- raster("layers/bio18.asc")
 bio19 <- raster("layers/bio19.asc")
 
 ## correlation analysis
-stack <- stack(bio1, bio2, bio3, bio4, bio5, bio6, bio7, bio8, bio9, bio10, bio11, bio12, bio13, bio14, bio15, bio16, bio17, bio18, bio19) 
-corr <- layerStats(stack, 'pearson', na.rm=TRUE)
+stacked <- stack(bio1, bio2, bio3, bio4, bio5, bio6, bio7, bio8, bio9, bio10, bio11, bio12, bio13, bio14, bio15, bio16, bio17, bio18, bio19) 
+corr <- layerStats(stacked, 'pearson', na.rm=TRUE)
 c <- corr$`pearson correlation coefficient`
 write.csv(c, "layers/correlationBioclim.csv")
 # inspect output for correlations between layers
-#   0.7 and above (or -0.7 and below) are correlated
+#   greater than 0.7 (and less than -0.7) are correlated
 #   for this analysis, retain bio2, bio3, bio5, bio6, bio8, bio9, bio12, bio13, bio14, bio19, and alt
