@@ -116,7 +116,9 @@ maxDipAdv <- maxent(
     'randomseed=true', #default=false
     'threads=2', #default=1
     'responsecurves=true', #default=false
-    'jackknife=true' #default=false
+    'jackknife=true', #default=false
+    'replicates=10', #default=1
+    'replicatetype=crossvalidate'
   )
 )
 maxDipAdv #view output as html
