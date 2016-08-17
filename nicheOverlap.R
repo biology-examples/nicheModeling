@@ -5,16 +5,54 @@ library(ENMeval)
 library(raster)
 library(dismo)
 
-# read in models (raster)
-rDip <- raster("models/diploid.grd")
-rTetra <- raster("models/tetraploid.grd")
+## multi-variate climate space comparisons (standard statistical testing, non-model based)
+# import occurrence data and convert to format required by maxent
+both <- read.csv(file="taxaData/bothTaxa.csv")
+diploid <- both %>%
+  filter(cytotype=="2X")
+diploid <- diploid[,c(3,2)]
+tetraploid <- both %>%
+  filter(cytotype=="4X")
+tetraploid <- tetraploid[,c(3,2)]
 
-## multi-variate climate space comparisons (non-model based overlap assessment)
-# one-way ANOVA with Tukey's post-hoc
+# import layers with CRS specified
+CRS <- "+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"
+alt <- raster("layers/alt.asc", crs=CRS)
+bio2 <- raster("layers/bio2.asc", crs=CRS)
+bio3 <- raster("layers/bio3.asc", crs=CRS)
+bio5 <- raster("layers/bio5.asc", crs=CRS)
+bio6 <- raster("layers/bio6.asc", crs=CRS)
+bio8 <- raster("layers/bio8.asc", crs=CRS)
+bio9 <- raster("layers/bio9.asc", crs=CRS)
+bio12 <- raster("layers/bio12.asc", crs=CRS)
+bio13 <- raster("layers/bio13.asc", crs=CRS)
+bio14 <- raster("layers/bio14.asc", crs=CRS)
+bio19 <- raster("layers/bio19.asc", crs=CRS)
+
+## create stack of non-correlated layers (as determined by layerPrep.R)
+predictors <- stack(alt, bio2, bio3, bio5, bio6, bio8, bio9, bio12, bio13, bio14, bio19) 
+
+# extract layer data for each point and add label
+dipPts <- extract(predictors, diploid)
+dipPts <- cbind.data.frame(species="diploid", dipPts) #add column for diploid
+tetraPts <- extract(predictors, tetraploid)
+tetraPts <- cbind.data.frame(species="tetraploid", tetraPts)
+# combine diploid and tetraploid
+bothPts <- as.data.frame(rbind(dipPts, tetraPts))
+
+# one-way ANOVA with Tukey's post-hoc (example from altitude)
+aov.alt <- aov(alt ~ species, data=bothPts)
+summary(aov.alt)
+TukeyHSD(aov.alt)
 
 # PCA with varimax rotation and Kaiser criterion (eigenvalues greater than or equal to 1) when choosing factors to include in PCA
+bothNum <- bothPts[ ,2:12] #remove species names
+pca_both <- prcomp(bothNum) #PCA
 
-## comparing niches
+## model-based approaches
+# read in default maxent models
+rDip <- raster("models/diploid.grd")
+rTetra <- raster("models/tetraploid.grd")
 # assessing niche overlap
 nicheOverlap(rDip, rTetra, stat='D', mask=TRUE, checkNegatives=TRUE) # D statistic
 nicheOverlap(rDip, rTetra, stat='I', mask=TRUE, checkNegatives=TRUE) # I statistic
