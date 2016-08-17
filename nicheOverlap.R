@@ -46,9 +46,13 @@ aov.alt <- aov(alt ~ species, data=bothPts)
 summary(aov.alt)
 TukeyHSD(aov.alt)
 
-# PCA with varimax rotation and Kaiser criterion (eigenvalues greater than or equal to 1) when choosing factors to include in PCA
+# principle component analysis
 bothNum <- bothPts[ ,-1] #remove species names
-pca_both <- prcomp(bothNum) #PCA
+pca_both <- prcomp(bothNum, center = TRUE, scale. = TRUE) #PCA
+print(pca_both) #print deviations and rotations
+summary(pca_both) #print importance of components
+plot(pca_both, type="l") #plot variances
+ncomp <- 8 #specify number of components to load (representing 99% of variation)
 
 ## model-based approaches
 # read in default maxent models
