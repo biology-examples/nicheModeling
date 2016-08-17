@@ -1,9 +1,10 @@
 ## evaluating niche overlap between taxa
 
-library(ecospat)
-library(ENMeval)
+library(dplyr)
 library(raster)
 library(dismo)
+library(ecospat)
+library(ENMeval)
 
 ## multi-variate climate space comparisons (standard statistical testing, non-model based)
 # import occurrence data and convert to format required by maxent
@@ -33,9 +34,9 @@ bio19 <- raster("layers/bio19.asc", crs=CRS)
 predictors <- stack(alt, bio2, bio3, bio5, bio6, bio8, bio9, bio12, bio13, bio14, bio19) 
 
 # extract layer data for each point and add label
-dipPts <- extract(predictors, diploid)
+dipPts <- raster::extract(predictors, diploid)
 dipPts <- cbind.data.frame(species="diploid", dipPts) #add column for diploid
-tetraPts <- extract(predictors, tetraploid)
+tetraPts <- raster::extract(predictors, tetraploid)
 tetraPts <- cbind.data.frame(species="tetraploid", tetraPts)
 # combine diploid and tetraploid
 bothPts <- as.data.frame(rbind(dipPts, tetraPts))
@@ -46,7 +47,7 @@ summary(aov.alt)
 TukeyHSD(aov.alt)
 
 # PCA with varimax rotation and Kaiser criterion (eigenvalues greater than or equal to 1) when choosing factors to include in PCA
-bothNum <- bothPts[ ,2:12] #remove species names
+bothNum <- bothPts[ ,-1] #remove species names
 pca_both <- prcomp(bothNum) #PCA
 
 ## model-based approaches
